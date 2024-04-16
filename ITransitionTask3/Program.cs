@@ -10,17 +10,29 @@ public class Program : Game
             Console.WriteLine("The amount of arguments is incorrect. Expected: odd (3, 5, 7 etc)");
         else
         {
-            var allTurns = new Dictionary<int, string>();
-            for (var i = 1; i <= args.Length; i++)
+            if (IsInputRepeatable(args))
             {
-                allTurns.Add(i, args[i - 1]);
+                Console.WriteLine("You have repeated arguments! Please make sure your arguments are non-repeatable.");
             }
+            else
+            {
+                var allTurns = new Dictionary<int, string>();
+                for (var i = 1; i <= args.Length; i++)
+                {
+                    allTurns.Add(i, args[i - 1]);
+                }
         
-            AllTurns = allTurns;
+                AllTurns = allTurns;
         
-            Cryptography.GeneratePcTurn();
-            Cryptography.GenerateHmac();
-            GameMenu.DrawMainMenu();
+                Cryptography.GeneratePcTurn();
+                Cryptography.GenerateHmac();
+                GameMenu.DrawMainMenu();
+            }
         }
+    }
+
+    private static bool IsInputRepeatable(IReadOnlyCollection<string> input)
+    {
+        return new HashSet<string>(input).Count != input.Count;
     }
 }
